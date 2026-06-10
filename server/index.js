@@ -26,16 +26,21 @@ const errorHandler = require("./middlewares/errorHandler");
 
 const PORT = process.env.PORT || 4000;
 
+// Connect to database
 database.connect();
 
+// Body parsing middleware
 app.use(express.json());
 app.use(cookieParser());
+// CORS configuration
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:3000",
     credentials: true,
   })
 );
+
+// File upload configuration
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -43,6 +48,7 @@ app.use(
   })
 );
 
+// Connect to Cloudinary
 cloudinaryConnect();
 
 // Routes
