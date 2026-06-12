@@ -211,8 +211,9 @@ details > summary::-webkit-details-marker {
 }
 
 /* Buttons */
+/* Custom utility classes for Kravio Learn */
 .yellowButton {
-  @apply cursor-pointer rounded-md bg-yellow-50 px-[20px] py-[8px] font-semibold text-richblack-900;
+  @apply cursor-pointer rounded-md bg-yellow-50 px-[20px] py-[8px] font-semibold text-richblack-900 transition-all duration-200 hover:scale-95;
 }
 
 /* Swiper CSS Starts */
@@ -233,7 +234,7 @@ details > summary::-webkit-details-marker {
 /* Swiper CSS Ends */
 
 .blackButton {
-  @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5;
+  @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5 transition-all duration-200 hover:scale-95;
 }
 .lable-style {
   @apply text-[14px] text-richblack-5;
