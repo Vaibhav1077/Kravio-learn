@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 const ApiError = require("../utils/ApiError");
 
+// Token expiry constants
+const TOKEN_COOKIE_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
+
 const extractToken = (req) => {
+  // Priority: Cookie > Authorization header
   if (req.cookies && req.cookies.token) {
     return req.cookies.token;
   }
