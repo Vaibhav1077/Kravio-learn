@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 // Define the Courses schema
 const coursesSchema = new mongoose.Schema({
-	courseName: { type: String },
-	courseDescription: { type: String },
+	courseName: { type: String, required: true, trim: true },
+	courseDescription: { type: String, required: true },
 	instructor: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
@@ -26,6 +26,7 @@ const coursesSchema = new mongoose.Schema({
 	],
 	price: {
 		type: Number,
+		default: 0,
 	},
 	thumbnail: {
 		type: String,
@@ -36,10 +37,9 @@ const coursesSchema = new mongoose.Schema({
 	},
 	category: {
 		type: mongoose.Schema.Types.ObjectId,
-		// required: true,
 		ref: "Category",
 	},
-	studentsEnrolled: [
+	studentsEnroled: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
@@ -52,12 +52,18 @@ const coursesSchema = new mongoose.Schema({
 	status: {
 		type: String,
 		enum: ["Draft", "Published"],
+		default: "Draft",
 	},
 	createdAt: {
-		type:Date,
-		default:Date.now
+		type: Date,
+		default: Date.now,
 	},
 });
+
+// Add indexes for frequently queried fields
+coursesSchema.index({ status: 1, createdAt: -1 });
+coursesSchema.index({ instructor: 1 });
+coursesSchema.index({ category: 1 });
 
 // Export the Courses model
 module.exports = mongoose.model("Course", coursesSchema);
