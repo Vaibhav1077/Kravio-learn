@@ -1,13 +1,15 @@
 const mongoose = require("mongoose")
 
-const courseProgress = new mongoose.Schema({
+const courseProgressSchema = new mongoose.Schema({
   courseID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
+    required: true,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
+    required: true,
   },
   completedVideos: [
     {
@@ -15,6 +17,13 @@ const courseProgress = new mongoose.Schema({
       ref: "SubSection",
     },
   ],
+  lastAccessedAt: {
+    type: Date,
+    default: Date.now,
+  },
 })
 
-module.exports = mongoose.model("courseProgress", courseProgress)
+// Compound index for efficient lookups
+courseProgressSchema.index({ courseID: 1, userId: 1 }, { unique: true })
+
+module.exports = mongoose.model("courseProgress", courseProgressSchema)
