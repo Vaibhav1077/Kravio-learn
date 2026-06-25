@@ -222,7 +222,6 @@ exports.instructorDashboard = async (req, res) => {
         _id: course._id,
         courseName: course.courseName,
         courseDescription: course.courseDescription,
-        // Include other course properties as needed
         totalStudentsEnrolled,
         totalAmountGenerated,
       }
@@ -230,7 +229,19 @@ exports.instructorDashboard = async (req, res) => {
       return courseDataWithStats
     })
 
-    res.status(200).json({ success: true, courses: courseData })
+    // Calculate aggregate stats
+    const totalStudents = courseData.reduce((sum, c) => sum + c.totalStudentsEnrolled, 0)
+    const totalRevenue = courseData.reduce((sum, c) => sum + c.totalAmountGenerated, 0)
+
+    res.status(200).json({
+      success: true,
+      courses: courseData,
+      summary: {
+        totalCourses: courseData.length,
+        totalStudents,
+        totalRevenue,
+      },
+    })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: "Server Error" })
