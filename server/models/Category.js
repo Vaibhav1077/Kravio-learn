@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
 
-// Define the Tags schema
+// Define the Category schema
 const categorySchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
+		trim: true,
+		unique: true,
 	},
-	description: { type: String },
+	description: {
+		type: String,
+		trim: true,
+	},
 	courses: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
@@ -15,5 +20,8 @@ const categorySchema = new mongoose.Schema({
 	],
 });
 
-// Export the Tags model
+// Index for fast lookups by name
+categorySchema.index({ name: 1 });
+
+// Export the Category model
 module.exports = mongoose.model("Category", categorySchema);
