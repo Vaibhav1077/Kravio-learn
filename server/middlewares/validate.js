@@ -1,3 +1,9 @@
+/**
+ * Zod validation middleware factory
+ * Takes a Zod schema and returns Express middleware that validates req.body
+ * @param {import('zod').ZodSchema} schema - Zod schema to validate against
+ * @returns {Function} Express middleware function
+ */
 const validate = (schema) => (req, res, next) => {
   const result = schema.safeParse(req.body);
   if (!result.success) {
@@ -11,6 +17,7 @@ const validate = (schema) => (req, res, next) => {
       errors,
     });
   }
+  // Replace body with validated and transformed data
   req.body = result.data;
   next();
 };
