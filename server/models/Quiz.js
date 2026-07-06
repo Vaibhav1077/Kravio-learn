@@ -4,6 +4,7 @@ const questionSchema = new mongoose.Schema({
   questionText: {
     type: String,
     required: true,
+    trim: true,
   },
   options: [
     {
@@ -16,9 +17,15 @@ const questionSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
+  explanation: {
+    type: String,
+    trim: true,
+    default: "",
+  },
   points: {
     type: Number,
     default: 1,
+    min: 1,
   },
 });
 
