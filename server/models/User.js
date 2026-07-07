@@ -68,4 +68,8 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Indexes for optimized queries
+userSchema.index({ email: 1 });
+userSchema.index({ accountType: 1, active: 1 });
+
 module.exports = mongoose.model("user", userSchema);
