@@ -1,6 +1,7 @@
 {
-  "name": "react-tailwind-css-starter-pack",
-  "version": "0.1.0",
+  "name": "kravio-learn",
+  "version": "1.0.0",
+  "description": "An AI-powered Learning Management Platform built with the MERN Stack.",
   "private": true,
   "dependencies": {
     "@ramonak/react-progress-bar": "^5.0.3",
@@ -31,11 +32,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thepranaygupta/react-tailwind-css-starter-pack.git"
+    "url": "git+https://github.com/Vaibhav1077/Kravio-learn.git"
   },
-  "author": "Pranay Gupta",
+  "author": "Vaibhav Kaushal",
+  "homepage": "/",
   "bugs": {
-    "url": "https://github.com/thepranaygupta/react-tailwind-css-starter-pack/issues"
+    "url": "https://github.com/Vaibhav1077/Kravio-learn/issues"
   },
   "scripts": {
     "start": "react-scripts start",

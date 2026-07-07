@@ -1,14 +1,14 @@
 {
-  "name": "server",
+  "name": "kravio-learn-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Kravio Learn API server",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vaibhav Kaushal",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -26,6 +26,7 @@
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.22",
     "otp-generator": "^4.0.1",
-    "razorpay": "^2.8.6"
+    "razorpay": "^2.8.6",
+    "zod": "^4.4.3"
   }
 }

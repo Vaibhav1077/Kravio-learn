@@ -160,7 +160,6 @@ const enrollStudents = async (courses, userId, res) => {
           .status(500)
           .json({ success: false, error: "Course not found" })
       }
-      console.log("Updated course: ", enrolledCourse)
 
       const courseProgress = await CourseProgress.create({
         courseID: courseId,
@@ -179,18 +178,19 @@ const enrollStudents = async (courses, userId, res) => {
         { new: true }
       )
 
-      console.log("Enrolled student: ", enrolledStudent)
       // Send an email notification to the enrolled student
-      const emailResponse = await mailSender(
-        enrolledStudent.email,
-        `Successfully Enrolled into ${enrolledCourse.courseName}`,
-        courseEnrollmentEmail(
-          enrolledCourse.courseName,
-          `${enrolledStudent.firstName} ${enrolledStudent.lastName}`
+      try {
+        await mailSender(
+          enrolledStudent.email,
+          `Successfully Enrolled into ${enrolledCourse.courseName}`,
+          courseEnrollmentEmail(
+            enrolledCourse.courseName,
+            `${enrolledStudent.firstName} ${enrolledStudent.lastName}`
+          )
         )
-      )
-
-      console.log("Email sent successfully: ", emailResponse.response)
+      } catch (_emailErr) {
+        // Non-critical: enrollment succeeded, email failed
+      }
     } catch (error) {
       console.log(error)
       return res.status(400).json({ success: false, error: error.message })

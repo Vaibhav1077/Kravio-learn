@@ -32,25 +32,24 @@ function Home() {
 
         {/* Heading */}
         <div className="text-center text-4xl font-semibold">
-          Empower Your Future with
-          <HighlightText text={"Coding Skills"} />
+          Learn. Build. Innovate with
+          <HighlightText text={"Kravio Learn"} />
         </div>
 
         {/* Sub Heading */}
         <div className="-mt-3 w-[90%] text-center text-lg font-bold text-richblack-300">
-          With our online coding courses, you can learn at your own pace, from
-          anywhere in the world, and get access to a wealth of resources,
-          including hands-on projects, quizzes, and personalized feedback from
-          instructors.
+          Master in-demand skills with project-based courses. Learn at your own
+          pace, from anywhere in the world, with hands-on projects, quizzes, and
+          personalized feedback from instructors.
         </div>
 
         {/* CTA Buttons */}
         <div className="mt-8 flex flex-row gap-7">
           <CTAButton active={true} linkto={"/signup"}>
-            Learn More
+            Get Started
           </CTAButton>
           <CTAButton active={false} linkto={"/login"}>
-            Book a Demo
+            Explore Courses
           </CTAButton>
         </div>
 
@@ -158,9 +157,8 @@ function Home() {
             </div>
             <div className="flex flex-col items-start gap-10 lg:w-[40%]">
               <div className="text-[16px]">
-                The modern StudyNotion is the dictates its own terms. Today, to
-                be a competitive specialist requires more than professional
-                skills.
+                The modern tech industry dictates its own terms. Today, to be a
+                competitive specialist requires more than professional skills.
               </div>
               <CTAButton active={true} linkto={"/signup"}>
                 <div className="">Learn More</div>
