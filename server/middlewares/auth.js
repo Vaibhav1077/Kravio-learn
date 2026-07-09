@@ -3,6 +3,7 @@ const ApiError = require("../utils/ApiError");
 
 // Token expiry constants
 const TOKEN_COOKIE_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
+const TOKEN_HEADER_PREFIX = "Bearer ";
 
 const extractToken = (req) => {
   // Priority: Cookie > Authorization header
@@ -10,8 +11,8 @@ const extractToken = (req) => {
     return req.cookies.token;
   }
   const authHeader = req.header("Authorization");
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    return authHeader.slice(7);
+  if (authHeader && authHeader.startsWith(TOKEN_HEADER_PREFIX)) {
+    return authHeader.slice(TOKEN_HEADER_PREFIX.length);
   }
   return null;
 };
