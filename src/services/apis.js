@@ -48,9 +48,10 @@ export const courseEndpoints = {
 // RATINGS AND REVIEWS
 export const ratingsEndpoints = {
   REVIEWS_DETAILS_API: BASE_URL + "/course/getReviews",
+  GET_AVERAGE_RATING_API: BASE_URL + "/course/getAverageRating",
 }
 
-// CATAGORIES API
+// CATEGORIES API
 export const categories = {
   CATEGORIES_API: BASE_URL + "/course/showAllCategories",
 }
@@ -59,6 +60,7 @@ export const categories = {
 export const catalogData = {
   CATALOGPAGEDATA_API: BASE_URL + "/course/getCategoryPageDetails",
 }
+
 // CONTACT-US API
 export const contactusEndpoint = {
   CONTACT_US_API: BASE_URL + "/reach/contact",
@@ -70,4 +72,25 @@ export const settingsEndpoints = {
   UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
   CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
+}
+
+// QUIZ ENDPOINTS
+export const quizEndpoints = {
+  CREATE_QUIZ_API: BASE_URL + "/quiz/create",
+  GET_QUIZ_BY_SECTION_API: BASE_URL + "/quiz/getBySection",
+  UPDATE_QUIZ_API: BASE_URL + "/quiz/update",
+  DELETE_QUIZ_API: BASE_URL + "/quiz/delete",
+  SUBMIT_QUIZ_ATTEMPT_API: BASE_URL + "/quiz/submitAttempt",
+  GET_QUIZ_ATTEMPTS_API: BASE_URL + "/quiz/getAttempts",
+  GET_QUIZ_RESULTS_API: BASE_URL + "/quiz/getResults",
+}
+
+// ADMIN ENDPOINTS
+export const adminEndpoints = {
+  GET_ALL_USERS_API: BASE_URL + "/admin/getAllUsers",
+  GET_ALL_COURSES_ADMIN_API: BASE_URL + "/admin/getAllCourses",
+  GET_PLATFORM_STATS_API: BASE_URL + "/admin/getPlatformStats",
+  UPDATE_USER_STATUS_API: BASE_URL + "/admin/updateUserStatus",
+  DELETE_USER_API: BASE_URL + "/admin/deleteUser",
+  GET_REVENUE_DATA_API: BASE_URL + "/admin/getRevenueData",
 }

@@ -23,15 +23,19 @@ const cors = require("cors");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const errorHandler = require("./middlewares/errorHandler");
+const logger = require("./utils/logger");
+const { apiLimiter, authLimiter } = require("./middlewares/rateLimiter");
 
 const PORT = process.env.PORT || 4000;
 
 // Connect to database
 database.connect();
 
-// Body parsing middleware
-app.use(express.json());
+// Security & parsing middleware
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
+
 // CORS configuration
 app.use(
   cors({
@@ -48,8 +52,25 @@ app.use(
   })
 );
 
+// Request logging middleware
+app.use(logger.requestLogger);
+
+// Apply general rate limiter to all API routes
+app.use("/api/", apiLimiter);
+
+// Apply stricter rate limiter to auth routes
+app.use("/api/v1/auth", authLimiter);
+
 // Connect to Cloudinary
 cloudinaryConnect();
+
+// Response headers middleware - API metadata
+app.use((req, res, next) => {
+  res.setHeader("X-Powered-By", "Kravio Learn");
+  res.setHeader("X-API-Version", "1.0.0");
+  res.setHeader("X-Request-Timestamp", new Date().toISOString());
+  next();
+});
 
 // Routes
 app.use("/api/v1/auth", userRoutes);
@@ -64,15 +85,32 @@ app.get("/", (req, res) => {
   return res.json({
     success: true,
     message: "Kravio Learn API is running",
+    version: "1.0.0",
+    environment: process.env.NODE_ENV || "development",
   });
 });
 
 // Health check endpoint for Render
 app.get("/health", (req, res) => {
+  const uptime = process.uptime();
+  const memoryUsage = process.memoryUsage();
   return res.status(200).json({
     success: true,
     message: "OK",
     timestamp: new Date().toISOString(),
+    uptime: `${Math.floor(uptime / 60)}m ${Math.floor(uptime % 60)}s`,
+    memory: {
+      heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)}MB`,
+      heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)}MB`,
+    },
+  });
+});
+
+// 404 handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.method} ${req.originalUrl} not found`,
   });
 });
 
@@ -80,5 +118,8 @@ app.get("/health", (req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`, {
+    environment: process.env.NODE_ENV || "development",
+    port: PORT,
+  });
 });

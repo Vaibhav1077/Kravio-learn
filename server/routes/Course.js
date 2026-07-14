@@ -50,19 +50,31 @@ const {
 
 // Importing Middlewares
 const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth")
+const validate = require("../middlewares/validate")
+
+// Importing Validation Schemas
+const {
+  createCourseSchema,
+  editCourseSchema,
+  courseIdSchema,
+  createSectionSchema,
+  updateSectionSchema,
+  deleteSectionSchema,
+  createRatingSchema,
+} = require("../validations/course.validation")
 
 // ********************************************************************************************************
 //                                      Course routes
 // ********************************************************************************************************
 
 // Courses can Only be Created by Instructors
-router.post("/createCourse", auth, isInstructor, createCourse)
-//Add a Section to a Course
-router.post("/addSection", auth, isInstructor, createSection)
+router.post("/createCourse", auth, isInstructor, validate(createCourseSchema), createCourse)
+// Add a Section to a Course
+router.post("/addSection", auth, isInstructor, validate(createSectionSchema), createSection)
 // Update a Section
-router.post("/updateSection", auth, isInstructor, updateSection)
+router.post("/updateSection", auth, isInstructor, validate(updateSectionSchema), updateSection)
 // Delete a Section
-router.post("/deleteSection", auth, isInstructor, deleteSection)
+router.post("/deleteSection", auth, isInstructor, validate(deleteSectionSchema), deleteSection)
 // Edit Sub Section
 router.post("/updateSubSection", auth, isInstructor, updateSubSection)
 // Delete Sub Section
@@ -72,15 +84,15 @@ router.post("/addSubSection", auth, isInstructor, createSubSection)
 // Get all Registered Courses
 router.get("/getAllCourses", getAllCourses)
 // Get Details for a Specific Courses
-router.post("/getCourseDetails", getCourseDetails)
-// Get Details for a Specific Courses
-router.post("/getFullCourseDetails", auth, getFullCourseDetails)
+router.post("/getCourseDetails", validate(courseIdSchema), getCourseDetails)
+// Get Full Course Details (authenticated)
+router.post("/getFullCourseDetails", auth, validate(courseIdSchema), getFullCourseDetails)
 // Edit Course routes
-router.post("/editCourse", auth, isInstructor, editCourse)
+router.post("/editCourse", auth, isInstructor, validate(editCourseSchema), editCourse)
 // Get all Courses Under a Specific Instructor
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 // Delete a Course
-router.delete("/deleteCourse", auth, isInstructor, deleteCourse)
+router.delete("/deleteCourse", auth, isInstructor, validate(courseIdSchema), deleteCourse)
 
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
@@ -88,7 +100,6 @@ router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 //                                      Category routes (Only by Admin)
 // ********************************************************************************************************
 // Category can Only be Created by Admin
-// TODO: Put IsAdmin Middleware here
 router.post("/createCategory", auth, isAdmin, createCategory)
 router.get("/showAllCategories", showAllCategories)
 router.post("/getCategoryPageDetails", categoryPageDetails)
@@ -96,7 +107,7 @@ router.post("/getCategoryPageDetails", categoryPageDetails)
 // ********************************************************************************************************
 //                                      Rating and Review
 // ********************************************************************************************************
-router.post("/createRating", auth, isStudent, createRating)
+router.post("/createRating", auth, isStudent, validate(createRatingSchema), createRating)
 router.get("/getAverageRating", getAverageRating)
 router.get("/getReviews", getAllRating)
 
