@@ -24,27 +24,13 @@ const generateToken = (user) => {
 
 exports.signup = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, password, accountType, contactNumber, otp } = req.body;
+    const { firstName, lastName, email, password, accountType, contactNumber } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({
         success: false,
         message: "User already exists. Please sign in to continue.",
-      });
-    }
-
-    const recentOtp = await OTP.findOne({ email }).sort({ createdAt: -1 });
-    if (!recentOtp) {
-      return res.status(400).json({
-        success: false,
-        message: "OTP not found. Please request a new one.",
-      });
-    }
-    if (otp !== recentOtp.otp) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid OTP. Please try again.",
       });
     }
 
