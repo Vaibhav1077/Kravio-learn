@@ -8,7 +8,6 @@ const signupSchema = z.object({
   confirmPassword: z.string().min(1, "Confirm password is required"),
   accountType: z.enum(["Student", "Instructor"]).default("Student"),
   contactNumber: z.string().optional(),
-  otp: z.string().length(6, "OTP must be 6 digits"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords do not match",
   path: ["confirmPassword"],

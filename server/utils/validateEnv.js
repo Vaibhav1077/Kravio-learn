@@ -1,6 +1,9 @@
 const requiredVars = [
   "MONGODB_URL",
   "JWT_SECRET",
+];
+
+const optionalVars = [
   "MAIL_HOST",
   "MAIL_USER",
   "MAIL_PASS",
@@ -8,9 +11,6 @@ const requiredVars = [
   "API_KEY",
   "API_SECRET",
   "FOLDER_NAME",
-];
-
-const optionalVars = [
   "RAZORPAY_KEY",
   "RAZORPAY_SECRET",
 ];
