@@ -66,6 +66,7 @@ export default function Upload({
         className={`${
           isDragActive ? "bg-richblack-600" : "bg-richblack-700"
         } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-richblack-500`}
+        onClick={() => !previewSource && inputRef.current && inputRef.current.click()}
       >
         {previewSource ? (
           <div className="flex w-full flex-col p-6">
@@ -94,7 +95,7 @@ export default function Upload({
           </div>
         ) : (
           <div
-            className="flex w-full flex-col items-center p-6"
+            className="flex w-full flex-col items-center p-6 cursor-pointer"
             {...getRootProps()}
           >
             <input {...getInputProps()} ref={inputRef} />

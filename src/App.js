@@ -27,6 +27,10 @@ import CourseDetails from "./pages/CourseDetails";
 import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 import Instructor from "./components/core/Dashboard/InstructorDashboard/Instructor";
+import AdminDashboard from "./components/core/Dashboard/AdminDashboard/AdminDashboard";
+import AdminUsers from "./components/core/Dashboard/AdminDashboard/AdminUsers";
+import AdminCourses from "./components/core/Dashboard/AdminDashboard/AdminCourses";
+import AdminCategories from "./components/core/Dashboard/AdminDashboard/AdminCategories";
 
 function App() {
 
@@ -117,7 +121,17 @@ function App() {
           <Route path="dashboard/add-course" element={<AddCourse />} />
           <Route path="dashboard/my-courses" element={<MyCourses />} />
           <Route path="dashboard/edit-course/:courseId" element={<EditCourse />} />
-          
+          </>
+        )
+      }
+
+      {
+        user?.accountType === ACCOUNT_TYPE.ADMIN && (
+          <>
+          <Route path="dashboard/admin" element={<AdminDashboard />} />
+          <Route path="dashboard/admin/users" element={<AdminUsers />} />
+          <Route path="dashboard/admin/courses" element={<AdminCourses />} />
+          <Route path="dashboard/admin/categories" element={<AdminCategories />} />
           </>
         )
       }

@@ -18,7 +18,7 @@ export default function Instructor() {
         const instructorApiData = await getInstructorData(token)
         const result = await fetchInstructorCourses(token)
         console.log(instructorApiData)
-        if (instructorApiData.length) setInstructorData(instructorApiData)
+        if (instructorApiData && instructorApiData.length) setInstructorData(instructorApiData)
         if (result) {
           setCourses(result)
         }
@@ -109,7 +109,7 @@ export default function Instructor() {
                       </p>
                       <div className="mt-1 flex items-center space-x-2">
                         <p className="text-xs font-medium text-richblack-300">
-                          {course.studentsEnroled.length} students
+                          {course.studentsEnroled?.length ?? 0} students
                         </p>
                         <p className="text-xs font-medium text-richblack-300">
                           |

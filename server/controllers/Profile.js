@@ -230,7 +230,7 @@ exports.instructorDashboard = async (req, res) => {
       return courseDataWithStats
     })
 
-    res.status(200).json({ courses: courseData })
+    res.status(200).json({ success: true, courses: courseData })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: "Server Error" })

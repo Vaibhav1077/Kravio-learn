@@ -1,6 +1,7 @@
 // Icons Import
 import { FaArrowRight } from "react-icons/fa"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 // Image and Video Import
 import Banner from "../assets/Images/banner.mp4"
@@ -14,17 +15,34 @@ import HighlightText from "../components/core/HomePage/HighlightText"
 import InstructorSection from "../components/core/HomePage/InstructorSection"
 import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection"
 import TimelineSection from "../components/core/HomePage/TimelineSection"
+import { ACCOUNT_TYPE } from "../utils/constants"
 
 function Home() {
+  const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
+
+  // Determine correct dashboard link based on role
+  const getDashboardLink = () => {
+    if (!token) return "/signup"
+    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return "/dashboard/instructor"
+    if (user?.accountType === ACCOUNT_TYPE.ADMIN) return "/dashboard/admin"
+    return "/dashboard/enrolled-courses"
+  }
+
+  const getExploreCatalogLink = () => {
+    if (!token) return "/signup"
+    return "/catalog/web-development"
+  }
+
   return (
     <div>
       {/* Section 1 */}
       <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 text-white">
         {/* Become a Instructor Button */}
-        <Link to={"/signup"}>
+        <Link to={token ? getDashboardLink() : "/signup"}>
           <div className="group mx-auto mt-16 w-fit rounded-full bg-richblack-800 p-1 font-bold text-richblack-200 drop-shadow-[0_1.5px_rgba(255,255,255,0.25)] transition-all duration-200 hover:scale-95 hover:drop-shadow-none">
             <div className="flex flex-row items-center gap-2 rounded-full px-10 py-[5px] transition-all duration-200 group-hover:bg-richblack-900">
-              <p>Become an Instructor</p>
+              <p>{token ? "Go to Dashboard" : "Become an Instructor"}</p>
               <FaArrowRight />
             </div>
           </div>
@@ -45,10 +63,10 @@ function Home() {
 
         {/* CTA Buttons */}
         <div className="mt-8 flex flex-row gap-7">
-          <CTAButton active={true} linkto={"/signup"}>
-            Get Started
+          <CTAButton active={true} linkto={getDashboardLink()}>
+            {token ? "My Dashboard" : "Get Started"}
           </CTAButton>
-          <CTAButton active={false} linkto={"/login"}>
+          <CTAButton active={false} linkto={getExploreCatalogLink()}>
             Explore Courses
           </CTAButton>
         </div>
@@ -81,12 +99,12 @@ function Home() {
             }
             ctabtn1={{
               btnText: "Try it Yourself",
-              link: "/signup",
+              link: getDashboardLink(),
               active: true,
             }}
             ctabtn2={{
               btnText: "Learn More",
-              link: "/signup",
+              link: getExploreCatalogLink(),
               active: false,
             }}
             codeColor={"text-yellow-25"}
@@ -109,13 +127,13 @@ function Home() {
               "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
             }
             ctabtn1={{
-              btnText: "Continue Lesson",
-              link: "/signup",
+              btnText: token ? "Continue Learning" : "Continue Lesson",
+              link: getDashboardLink(),
               active: true,
             }}
             ctabtn2={{
               btnText: "Learn More",
-              link: "/signup",
+              link: getExploreCatalogLink(),
               active: false,
             }}
             codeColor={"text-white"}
@@ -135,14 +153,14 @@ function Home() {
           <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8">
             <div className="lg:h-[150px]"></div>
             <div className="flex flex-row gap-7 text-white lg:mt-8">
-              <CTAButton active={true} linkto={"/signup"}>
+              <CTAButton active={true} linkto={getExploreCatalogLink()}>
                 <div className="flex items-center gap-2">
                   Explore Full Catalog
                   <FaArrowRight />
                 </div>
               </CTAButton>
-              <CTAButton active={false} linkto={"/login"}>
-                Learn More
+              <CTAButton active={false} linkto={getDashboardLink()}>
+                {token ? "My Dashboard" : "Learn More"}
               </CTAButton>
             </div>
           </div>
@@ -160,7 +178,7 @@ function Home() {
                 The modern tech industry dictates its own terms. Today, to be a
                 competitive specialist requires more than professional skills.
               </div>
-              <CTAButton active={true} linkto={"/signup"}>
+              <CTAButton active={true} linkto={getExploreCatalogLink()}>
                 <div className="">Learn More</div>
               </CTAButton>
             </div>

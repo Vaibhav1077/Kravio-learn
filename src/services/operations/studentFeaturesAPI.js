@@ -27,6 +27,27 @@ function loadScript(src) {
 export async function buyCourse(token, courses, userDetails, navigate, dispatch) {
     const toastId = toast.loading("Loading...");
     try{
+        // Check if all courses are free (price = 0)
+        const courseDetailsRes = await apiConnector("POST", 
+            `${process.env.REACT_APP_BASE_URL || "http://localhost:4000/api/v1"}/course/getCourseDetails`,
+            { courseId: courses[0] }
+        );
+        const coursePrice = courseDetailsRes?.data?.data?.courseDetails?.price;
+
+        if(coursePrice === 0) {
+            // Free course - enroll directly without payment
+            const enrollRes = await apiConnector("POST", COURSE_VERIFY_API, 
+                { courses, isFree: true },
+                { Authorization: `Bearer ${token}` }
+            );
+            if(!enrollRes.data.success) throw new Error(enrollRes.data.message);
+            toast.success("Enrolled Successfully!");
+            navigate("/dashboard/enrolled-courses");
+            dispatch(resetCart());
+            toast.dismiss(toastId);
+            return;
+        }
+
         //load the script
         const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
