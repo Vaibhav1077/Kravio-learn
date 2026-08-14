@@ -13,13 +13,17 @@ const {
 // ********************************************************************************************************
 //                                      Profile routes
 // ********************************************************************************************************
-// Delet User Account
+
+// Account management
 router.delete("/deleteProfile", auth, deleteAccount)
 router.put("/updateProfile", auth, updateProfile)
-router.get("/getUserDetails", auth, getAllUserDetails)
-// Get Enrolled Courses
-router.get("/getEnrolledCourses", auth, getEnrolledCourses)
 router.put("/updateDisplayPicture", auth, updateDisplayPicture)
+
+// User data retrieval
+router.get("/getUserDetails", auth, getAllUserDetails)
+router.get("/getEnrolledCourses", auth, getEnrolledCourses)
+
+// Instructor-specific routes
 router.get("/instructorDashboard", auth, isInstructor, instructorDashboard)
 
 module.exports = router
