@@ -70,67 +70,54 @@ npm run build
 
 ```mermaid
 flowchart TD
-    %% Styling
-    classDef frontend fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
-    classDef backend fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
-    classDef database fill:#d1fae5,stroke:#10b981,stroke-width:2px
-    classDef neutral fill:#f3f4f6,stroke:#6b7280,stroke-width:2px
+    classDef frontend fill:#2563eb,stroke:#1d4ed8,color:#ffffff,stroke-width:2px
+    classDef backend fill:#d97706,stroke:#b45309,color:#ffffff,stroke-width:2px
+    classDef database fill:#059669,stroke:#047857,color:#ffffff,stroke-width:2px
+    classDef neutral fill:#4b5563,stroke:#374151,color:#ffffff,stroke-width:2px
 
-    %% User
-    User(["👤 User<br/>opens app in browser"]):::neutral
+    User(["User - opens app"]):::neutral
 
-    %% Frontend Layer
-    subgraph FRONTEND["FRONTEND (src/)"]
-        direction TB
-        INDEX["index.js<br/><small>root render + redux store</small>"]:::frontend
-        APP["App.js<br/><small>Routes</small>"]:::frontend
-        LOGIN["pages/Login.jsx"]:::frontend
-        TEMPLATE["Auth/Template.jsx"]:::frontend
-        LOGINFORM["Auth/LoginForm.jsx<br/><small>dispatch(login())</small>"]:::frontend
-        AUTHAPI["operations/authAPI.js"]:::frontend
-        APICONNECTOR["services/apiconnector.js<br/><small>axios instance</small>"]:::frontend
+    subgraph FRONTEND [FRONTEND - src]
+        INDEX[index.js - root render + redux]:::frontend
+        APP[App.js - Routes]:::frontend
+        LOGIN[pages/Login.jsx]:::frontend
+        LOGINFORM[Auth/LoginForm.jsx]:::frontend
+        AUTHAPI[operations/authAPI.js]:::frontend
+        APICONNECTOR[services/apiconnector.js - axios]:::frontend
     end
 
-    %% Backend Layer
-    subgraph BACKEND["BACKEND (server/)"]
-        direction TB
-        SERVER["index.js<br/><small>app + middlewares</small>"]:::backend
-        ROUTES["routes/User.js<br/><small>POST /auth/login</small>"]:::backend
-        VALIDATE["middlewares/validate.js<br/><small>Zod schema check</small>"]:::backend
-        CONTROLLER["controllers/Auth.js<br/><small>login()</small>"]:::backend
-        AUTHMW["middlewares/auth.js<br/><small>JWT verify (other routes)</small>"]:::backend
+    subgraph BACKEND [BACKEND - server]
+        SERVER[index.js - express app]:::backend
+        ROUTES[routes/User.js - POST /auth/login]:::backend
+        VALIDATE[middlewares/validate.js - Zod]:::backend
+        CONTROLLER[controllers/Auth.js - login]:::backend
+        AUTHMW[middlewares/auth.js - JWT verify]:::backend
     end
 
-    %% Database Layer
-    subgraph DATABASE["DATABASE"]
-        direction TB
-        MODELS["models/User.js<br/>models/Profile.js"]:::database
-        DBCONFIG["config/database.js<br/><small>MongoDB Atlas</small>"]:::database
+    subgraph DATABASE [DATABASE]
+        MODELS[models/User.js + Profile.js]:::database
+        DBCONFIG[config/database.js - MongoDB Atlas]:::database
     end
 
-    %% Response
-    AUTHSLICE["slices/authSlice.js<br/><small>setToken, setUser</small>"]:::frontend
-    DASHBOARD["pages/Dashboard.jsx<br/><small>UI output (redirect)</small>"]:::frontend
-    OTHERROUTES["Other routes<br/><small>Payments.js, Quiz.js, Admin.js</small>"]:::backend
+    AUTHSLICE[slices/authSlice.js - setToken]:::frontend
+    DASHBOARD[pages/Dashboard.jsx - UI output]:::frontend
+    OTHERROUTES[Other routes - Payments, Quiz, Admin]:::backend
 
-    %% Flow connections
     User --> INDEX
     INDEX --> APP
     APP --> LOGIN
-    LOGIN --> TEMPLATE
-    TEMPLATE --> LOGINFORM
+    LOGIN --> LOGINFORM
     LOGINFORM --> AUTHAPI
     AUTHAPI --> APICONNECTOR
-    APICONNECTOR -->|"POST /api/v1/auth/login"| SERVER
+    APICONNECTOR -->|POST /api/v1/auth/login| SERVER
     SERVER --> ROUTES
     ROUTES --> VALIDATE
     VALIDATE --> CONTROLLER
-    CONTROLLER -->|"bcrypt + JWT sign"| MODELS
+    CONTROLLER -->|bcrypt + JWT sign| MODELS
     MODELS --> DBCONFIG
-    CONTROLLER -->|"{token, user} JSON"| AUTHSLICE
+    CONTROLLER -->|token + user JSON| AUTHSLICE
     AUTHSLICE --> DASHBOARD
-    AUTHMW -.->|"same pattern"| OTHERROUTES
-    DBCONFIG --> MODELS
+    AUTHMW -.->|same pattern| OTHERROUTES
 ```
 
 **Flow:** User → Frontend (React + Redux) → API Layer (Axios) → Backend (Express + Middlewares + Zod Validation) → Database (MongoDB Atlas) → JWT Response → Redux Store → Dashboard UI
