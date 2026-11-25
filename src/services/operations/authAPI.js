@@ -44,11 +44,15 @@ export function signUp(
       navigate("/login")
     } catch (error) {
       console.log("SIGNUP API ERROR............", error)
-      toast.error("Signup Failed")
-      navigate("/signup")
+      const errMsg = error?.response?.data?.errors?.[0]?.message 
+        || error?.response?.data?.message 
+        || error?.message 
+        || "Signup Failed"
+      toast.error(errMsg)
+    } finally {
+      dispatch(setLoading(false))
+      toast.dismiss(toastId)
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
   }
 }
 
@@ -80,10 +84,15 @@ export function login(email, password, navigate) {
       navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("LOGIN API ERROR............", error)
-      toast.error("Login Failed")
+      const errMsg = error?.response?.data?.errors?.[0]?.message
+        || error?.response?.data?.message 
+        || error?.message 
+        || "Login Failed"
+      toast.error(errMsg)
+    } finally {
+      dispatch(setLoading(false))
+      toast.dismiss(toastId)
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
   }
 }
 

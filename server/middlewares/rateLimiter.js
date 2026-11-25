@@ -1,8 +1,10 @@
 const rateLimit = new Map();
 
+const IS_DEV = process.env.NODE_ENV !== "production";
+
 const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 const MAX_REQUESTS = 100; // max requests per window per IP
-const AUTH_MAX_REQUESTS = 20; // stricter limit for auth routes
+const AUTH_MAX_REQUESTS = IS_DEV ? 1000 : 20; // relaxed in dev, strict in production
 
 /**
  * Clean up expired entries from the rate limit map
